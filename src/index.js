@@ -25,9 +25,12 @@ app.get("/test", (req, res) => {
   }
 });
 
+app.get('/que', (req, res) => res.json({ so: true }));
+
 app.listen(port, () => {
   console.log(`Hi there, I'm listening on port http://localhost:${port}`);
 });
 
 
-app.get('/ping', (req, res) => res.json({ pong: true }));
+/*app.get('/ping', (req, res) => res.json({ pong: true }));*/
+
