@@ -1,69 +1,87 @@
-# Building a Node.js API with Express.js in a Docker Container 🐳
+Ejercicio 1 
 
-This repository aims to illustrate how you can run a simple API in Node.js, using Express.js, and build a Docker image. You can then use this Docker image to run your app inside a Docker container and access your Node.js API from there.
 
-To build your own API you'll need to create a node app, build the api with express.js and create a dockerfile:
+    ¿Qué hace git clone y dónde sitúa el control de versiones?
+        El git clone, clona el repositorio de github y lo sitúa en la carpeta qué nosotros queramos.
 
-## Steps:
 
-1. Install [Docker Desktop](https://docs.docker.com/get-docker/)
-2. Create a folder for your app and initialize your node.js app by running this command:
+    ¿Qué es un Dockerfile y por qué Docker cachea capas?
+        Un Dockerfile es un archivo de texto que contiene una serie de instrucciones para construir una imagen Docker. 
 
-```console
-> npm init
-```
+        Docker cachea en capas para acelerar la construcción de imágenes.
 
-3. Install express.js and build your api using a public port like 8080 e.g. like the index.js file in the src folder in this repo.
-4. Test your api by running the **node** command making sure you get the desired response:
+    Diferencia entre git add y git commit.
+        “Git add .”  añade todas las actualizaciones / cambios del directorio al proyecto, así deja todo preparado para el siguiente commit.
 
-```console
-> node ./src/index.js
-```
+        El “Git commit” es el comando que utilizamos para mandar todos los cambios realizados al repositorio en github, le podemos agregar un -m para mandarlo con mensajes y tener un mejor recuento de los cambios que vamos haciendo. 
 
-5. Create your docker file with the following set of instructions. Instructions are like steps/layers which make it possible for Docker to cahce some of the steps if nothing has changed. Thats why the step to install the node_modules comes early on so that Docker doesn't have to reinstall them everytime something changes in your app's source code ⏱️
 
-```docker
-FROM node:12
 
-WORKDIR /app
+Ejercicio 2: Modificación y versionado (Semi-autónomo)
 
-COPY package*.json ./
 
-RUN npm install
+    ¿Qué es un PR y cómo facilita la colaboración?
+        En GitHub, un Pull Request (PR) o Solicitud de Incorporación de Cambios es una forma de proponer cambios a un repositorio.
+        Es una solicitud para que los colaboradores revisen, discutan y eventualmente fusionen tus cambios con la rama principal (main o master) del proyecto.
 
-COPY . .
+Ejercicio 4: 
 
-ENV PORT=8080
+    Explicar los comandos vistos en el PDF
 
-EXPOSE 8080
+        git clone https://github.com/brandoncaulfield/node-api-docker.git
 
-CMD [ "npm", "start" ]
-```
+            Este comando clona el repositorio de github en nuestro visual studio para poder trabajar con todos los archivos.
 
-6. Make sure you have a script in your package.json that handles the last step **npm start**. See the package.json file "scripts" section in the repo.
-7. Run the Docker build command like below:
+        git clone https://github.com/brandoncaulfield/node-api-docker.git cd node-api-docker
 
-```console
-> docker build -t node-api-docker:1.0 .
-```
+            Este es para (por si no lo hiciste antes) clonarlo pero además posicionarse en la carpeta del principal.
 
-8. If successful you should see a line that looks like this with the id you need for the last step
+        docker build -t clase-api:1.0 .
 
-```console
-Successfully built 9d1h36e6a333
-```
+            Este comando es para crear el contenedor en docker, otorgando el nombre “clase-api:1.0”.
 
-9. Execute the Docker run command using the id from the last step and making sure you map your enviroment port from your express.js api (e.g. 8080) to another port like 5001.
+        docker run -d -p 5001:8080 --name tp-api clase-api:1.0
 
-```console
-docker run -p 5001:8080 9d1h36e6a333
-```
+            Este es para correr el contenedor en el puerto 5001.
 
-10. If all goes well you should be able to visit localhost:5001 and see the response from your api now running in a Docker container 🐳
+        curl http://localhost:5001
 
-## Documentation
+            Este hace la solicitud HTTPS GET a la URL.
 
-- [Node npm](https://docs.npmjs.com/cli/v6/commands/npm-init)
-- [Express.js](https://expressjs.com/en/guide/routing.html)
-- [Docker File](https://docs.docker.com/engine/reference/builder/)
-"# tp---git---docker---api---ITS" 
+        git checkout -b ejercicio1 
+        git add .
+        git commit -m "feat: cloné y levanté la API en Docker"
+
+            Estos son todos los comandos necesarios para crear una rama nueva llamada “ejercicio1”, agregar los cambios y envíar el commit con el comentario.
+
+        docker build -t clase-api:2.0 . 
+
+            Creamos otro contenedor docker.
+
+        docker stop tp-api && docker rm tp-api 
+
+            Detenemos y borramos el contenedor creado al principio.
+
+        docker run -d -p 5001:8080 --name tp-api clase-api:2.0
+
+            Arrancamos el contenedor en el puerto 5001.
+
+        curl http://localhost:5001/ping
+
+            Hacemos la solicitud pero especificando que pruebe el espacio /ping.
+
+        git checkout -b ejercicio2 
+
+            Creamos una nueva rama “ejercicio2”.
+
+        git add src/index.js
+
+            Agregamos cambios hechos en el index.
+
+         git commit -m "feat: agregada ruta /ping" 
+
+            Hacemos el commit.
+
+        git push origin ejercicio2
+
+            Mandamos la rama ejercicio2 al repositorio.
